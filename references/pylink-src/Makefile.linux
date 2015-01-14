@@ -1,0 +1,43 @@
+ifeq ($(PYVER),"")
+        PYVER=2.7
+endif
+
+DEPPYVERSION=python$(PYVER)
+DEPDIR=/usr/local/lib/$(DEPPYVERSION)/site-packages/pylink
+
+all: package
+
+
+build: 
+	rm -rf $(DEPDIR)
+	-rm -rf csrc/eyelinkmodule_processed*
+	echo "#define MAPFCN(x,y)  { x,y, 0x0001,x}" >csrc/eyelinkmodule_processed1.c
+	echo "#define MAPFCNEX(x,y,z)  { x,y, 0x0001,z}" >>csrc/eyelinkmodule_processed1.c
+	-gcc  -DNO_SDL -DLINUX -DUNIX -DNDEBUG  -I../EyeLinkDisplaySoftwareLinux1.5/include/ -I/usr/local/include/$(DEPPYVERSION)/ -I/usr/include/$(DEPPYVERSION)/ -E csrc/eyelinkmodule.c 2> t.txt 1>>csrc/eyelinkmodule_processed1.c
+	gcc  -DNO_SDL  -DLINUX -DUNIX -DNDEBUG  -I../EyeLinkDisplaySoftwareLinux1.5/include/ -I/usr/local/include/$(DEPPYVERSION)/ -I/usr/include/$(DEPPYVERSION)/ -E csrc/eyelinkmodule_processed1.c 2> t.txt 1>>csrc/eyelinkmodule_processed.c
+	$(DEPPYVERSION) setuplinux.py install
+	cp -R $(DEPDIR) pylinktogo/pylink$(PYVER)
+	find  pylinktogo/pylink$(PYVER) -depth -name "*.py"  -exec rm -rf {} \;
+
+
+
+package: clean
+	mkdir pylinktogo
+	cp -R examples pylinktogo
+	cp  "Pylink api userguide.pdf" pylinktogo
+	cp readmemac.txt pylinktogo/readme.txt
+
+	rm -rf build
+	make -f Makefile.linux build PYVER=2.7
+
+	#rm -rf build
+	#make -f Makefile.linux build PYVER=2.5
+	
+	#rm -rf build
+	#make -f Makefile.linux build PYVER=2.6
+
+	find  pylinktogo -depth -name "CVS"  -exec rm -rf {} \;
+	
+
+clean:
+	rm -rf pylinktogo
