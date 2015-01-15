@@ -26,7 +26,7 @@ Here's a list of the functions currently in the wrapper. See each functions `hel
 * `.sendVAR()` : Sends key-value pairs to the EDF file as variables that can be included in dataviewer reports.
 * `.setTrialResult()` : Indiciates the end of an experimental trial in the EDF. Sets TRIAL_RESULT to 0.
 * `.endExperiment()` : Closes the EDF file and transfers it to the provided path on the display computer.
-* `.fixCheck` : Pauses experiment until fixation at the center of the screen has been held for a given amount of time.
+* `.fixCheck()` : Pauses experiment until fixation at the center of the screen has been held for a given amount of time.
 
 ## Example
 An very simple experiment that shows how to use the above functions is provided in `eyetest.py`.
