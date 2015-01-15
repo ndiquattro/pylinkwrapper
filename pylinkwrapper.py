@@ -157,7 +157,7 @@ class eyeLinkFuns(object):
         self.tracker.receiveDataFile(self.edfname, fpath)
         self.tracker.close()
         
-    def fixcheck(self, size, ftime, button):
+    def fixCheck(self, size, ftime, button):
         '''Checks that fixation is maintained for certain time.
         
         Parameters
