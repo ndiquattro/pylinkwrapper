@@ -1,5 +1,5 @@
 # Define custom calibration display using Psychopy
-from psychopy import event, sound, visual
+from psychopy import core, event, sound, visual
 import pylink
 
 class psychocal(pylink.EyeLinkCustomDisplay):
@@ -169,3 +169,19 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 					
 	def set_image_palette(self, r,g,b): 
 		pass
+		
+	def dummynote(self):
+		# Color of text
+		if sum(self.backcolor) != 0:
+			tcol = -(self.backcolor)
+		else:
+			tcol = -1
+		
+		# Draw Text
+		visual.TextStim(self.window, text = 'Dummy Connection with EyeLink',
+						color = tcol).draw()
+		self.window.flip()
+						
+		# Wait for key press
+		event.waitKeys()
+		self.window.flip()

@@ -17,8 +17,13 @@ class eyeLinkFuns(object):
         self.edfname = edfname + '.edf'
         
         # Initialize connection with eye-tracker
-        self.tracker = pylink.EyeLink()
-        
+        try:
+            self.tracker = pylink.EyeLink()
+            self.realconnect = True
+        except:
+            self.tracker = pylink.EyeLink(None)
+            self.realconnect = False
+            
         # Make pylink accessible
         self.pylink = pylink
         
@@ -54,18 +59,23 @@ class eyeLinkFuns(object):
         '''
         
         # Generate custom calibration stimuli
-        genv = psychocal.psychocal(self.sres[0], self.sres[1], self.tracker,
-                                   self.win)
-        pylink.openGraphicsEx(genv)
-        
-        # Calibrate and close window
-        self.tracker.doTrackerSetup(self.sres[0], self.sres[1])
+        genv = psychocal.psychocal(self.sres[0], self.sres[1],
+                                    self.tracker, self.win)
+                                    
+        if self.realconnect:
+            # Execute custom calibration display
+            pylink.openGraphicsEx(genv)
+            
+            # Calibrate
+            self.tracker.doTrackerSetup(self.sres[0], self.sres[1])
+        else:
+            genv.dummynote()
         
     def setStatus(self, message):
         '''Sets status message to appear while recording.
         
         Parameters
-            message -- Text object to send, must < 80 char
+            message -- Text object to send, must be < 80 char
         '''
         
         msg = "record_status_message '%s'" % message
@@ -188,7 +198,7 @@ class eyeLinkFuns(object):
         # Begin polling
         keys = []
         fixtime = time.clock()
-        while True:
+        while self.realconnect:  # only start check loop if real connection
 
             # Check for recalibration button
             keys = event.getKeys(button)
@@ -215,4 +225,23 @@ class eyeLinkFuns(object):
                 # Reset clock if not in box
                 fixtime = time.clock()
                 
+    def sendMessage(self, txt):
+        '''Sends a message to the tracker that is recorded in the EDF
+        
+        Parameters
+            txt -- String that contains the message
+        '''
+        
+        # Send message
+        self.tracker.sendMessage(txt)
+        
+    def sendCommand(self, cmd):
+        '''Sends a command to EyeLink
+        
+        Parameters
+            cmd -- String that contains the command
+        '''
+        
+        # Send Command
+        self.tracker.sendCommand(cmd)
         
