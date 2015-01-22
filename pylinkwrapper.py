@@ -64,7 +64,7 @@ class eyeLinkFuns(object):
         if self.realconnect:
             # Set calibration type
             calst = 'HV{}'.format(cnum)
-            pylink.setCalibrationType(calst)
+            self.tracker.setCalibrationType(calst)
             
             # Execute custom calibration display
             pylink.openGraphicsEx(genv)
