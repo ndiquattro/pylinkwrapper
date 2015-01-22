@@ -2,6 +2,7 @@
 from psychopy import core, event, sound, visual
 import pylink
 import scipy
+import numpy as np
 import tempfile
 import os
 
