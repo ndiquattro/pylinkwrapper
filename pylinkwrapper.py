@@ -49,13 +49,12 @@ class eyeLinkFuns(object):
         disptxt = 'DISPLAY_COORDS 0 0 {} {}'.format(*self.sres)
         self.tracker.sendMessage(disptxt)
 
-    def calibrate(self):
+    def calibrate(self, cnum = 13):
         '''Calibrates eye-tracker using psychopy stimuli.
         
         Parameters
-            bgcolor -- background color of calibration display
-            tcolout -- color of outer circle calibration target
-            tcolin  -- color of inner circle calibration target
+            cnum -- Number of points to use for calibration. Default is 13.
+                    Options: 3, 5, 9, 13
         '''
         
         # Generate custom calibration stimuli
@@ -63,6 +62,10 @@ class eyeLinkFuns(object):
                                     self.tracker, self.win)
                                     
         if self.realconnect:
+            # Set calibration type
+            calst = 'HV{}'.format(cnum)
+            pylink.setCalibrationType(calst)
+            
             # Execute custom calibration display
             pylink.openGraphicsEx(genv)
             
@@ -184,8 +187,11 @@ class eyeLinkFuns(object):
         xbdr = [cenX - size, cenX + size]
         ybdr = [cenY - size, cenY + size]
 
-        # Set status message
+        # Set status message & Draw box
         self.setStatus('Fixation Check')
+        bxmsg = 'draw_box {} {} {} {} 1'.format(xbdr[0], ybdr[0], xbdr[1],
+                                                ybdr[1])
+        self.tracker.sendCommand(bxmsg)
         
         # Begin recording
         self.tracker.startRecording(0, 0, 1, 1)
@@ -204,7 +210,8 @@ class eyeLinkFuns(object):
             keys = event.getKeys(button)
             if keys:
                 self.tracker.stopRecording()
-                self.calibrate() 
+                self.calibrate()
+                break 
             
             # Grab latest sample
             sample = self.tracker.getNewestSample()

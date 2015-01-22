@@ -44,6 +44,7 @@ for t in range(5):
                              #  display
                              
     tracker.setTrialID()  # Sends trial start message for EDF
+    tracker.sendMessage('Circle Trial')
     
     # Draw IA
     tracker.drawIA(fx, fy, 1, 1, 5, 'circle')  # Draw interest area and box
