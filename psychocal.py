@@ -125,7 +125,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		v = event.getKeys()
 		
 		for key in v:
-			char = key[0]
+			char = key
 			pylink_key = None
 			if char == "escape":
 				pylink_key = pylink.ESC_KEY
@@ -139,9 +139,9 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 				pylink_key = ord(char)
 			elif char == "a":
 				pylink_key = ord(char)
-			elif char == "page_up":
+			elif char == "pageup":
 				pylink_key = pylink.PAGE_UP
-			elif char == "page_down":
+			elif char == "pagedown":
 				pylink_key = pylink.PAGE_DOWN
 			elif char == "-":
 				pylink_key = ord(char)
@@ -156,7 +156,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 			elif char == "right":
 				pylink_key = pylink.CURS_RIGHT
 			else:
-				print('Error!')
+				print('Error! :{}'.format(char))
 				return
 				
 			ky.append(pylink.KeyInput(pylink_key, 0))
@@ -186,7 +186,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 				text = text,
 				pos = (0, self.window.size[1] / 2 - 15), height = 28,
 				color = self.txtcol, alignHoriz = 'center', alignVert = 'top',
-				wrapWidth = self.window.size[0]*.8)
+				wrapWidth = self.window.size[0]*.8, units = 'pix')
 		else:
 			self.imagetitlestim.setText(text)
 		
@@ -212,7 +212,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 	
 			# Save image as a temporay file
 			tfile = os.path.join(tempfile.gettempdir(),'_eleye.png')
-			image.save(self.tmp_file, 'PNG')
+			image.save(tfile, 'PNG')
 			
 			# Create eye image
 			if self.eye_image is None:
@@ -221,7 +221,6 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 				self.eye_image.setImage(tfile)
 	
 			# Redraw the Camera Setup Mode graphics
-			self.window.flip()
 			self.eye_image.draw()
 			if self.imagetitlestim:
 				self.imagetitlestim.draw()
