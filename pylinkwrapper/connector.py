@@ -5,8 +5,13 @@ import time
 from psychopy.tools.monitorunittools import deg2pix
 from psychopy import event
 
-class eyeLinkFuns(object):
-    """Provides functions for interacting with Pylink."""
+class connect(object):
+    """Provides functions for interacting with the EyeLink via Pylink.
+    
+        Parameters
+            window  -- Psychopy window object that the experiment uses.
+            edfname -- Desired name of the EDF file.
+    """
 
     def __init__(self, window, edfname):
         # Pull out monitor info
