@@ -86,13 +86,18 @@ class connect(object):
             message -- Text object to send, must be < 80 char
         '''
         
-        msg = "record_status_message '%s'" % message
+        msg = "record_status_message '{}'".format(message)
         self.tracker.sendCommand(msg)
         
-    def setTrialID(self):
-        '''Sends message that indicates start of trial in EDF.'''
+    def setTrialID(self, idval = 1):
+        '''Sends message that indicates start of trial in EDF.
         
-        self.tracker.sendMessage('TRIALID 1')
+        Parameters
+            idval = Values to set TRIALID. Defaults to 1.
+        '''
+        
+        tid = 'TRIALID {}'.format(idval)
+        self.tracker.sendMessage(tid)
         
     def recordON(self):
         '''Starts recording, waits 50ms to allow eyelink to prepare.'''
@@ -150,11 +155,20 @@ class connect(object):
         # Send message
         self.tracker.sendMessage(varmsg)
         
-    def setTrialResult(self):
-        '''Sends trial result to indiciate trial end in EDF.'''
+    def setTrialResult(self, rval = 0, scrcol = 0):
+        '''Sends trial result to indiciate trial end in EDF and clears    
+           screen on EyeLink Display.
+           
+        Parameters
+            rval   -- Value to set for TRIAL_RESULT. Defaults to 0.
+            scrcol -- Color to clear screen to. Defaults to 0 (black).
+        '''
         
-        self.tracker.sendMessage('TRIAL_RESULT 0')
-        self.tracker.sendCommand('clear_screen 0')
+        trmsg = 'TRIAL_RESULT {}'.format(rval)
+        cscmd = 'clear_screen {}'.format(scrcol)
+        
+        self.tracker.sendMessage(trmsg)
+        self.tracker.sendCommand(cscmd)
         
     def endExperiment(self, spath):
         '''Closes and transfers the EDF file.
