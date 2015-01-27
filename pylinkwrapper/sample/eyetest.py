@@ -12,14 +12,14 @@ from psychopy import visual
 from psychopy import core, event
 import numpy as np
 
-from pylinkwrapper import eyeLinkFuns  # Here's the special one
+import pylinkwrapper# Here's the special one
 
 # Window set-up
 win = visual.Window(monitor = 'nickMon', units = 'deg', fullscr = True,
                     allowGUI = False, color = 0)
 
 # Initiate eye-tracker link and open EDF
-tracker = eyeLinkFuns(win, '1_test') 
+tracker = pylinkwrapper.connect(win, '1_test') 
 
 # Calibrate eye-tracker
 tracker.calibrate()
