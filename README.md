@@ -2,17 +2,17 @@
 Wrapper for using pylink in psychopy
 
 ## Installation
-First, download `pylinkwrapper.py` and `psychocal.py` placing them in the same directory as your psychopy experiment script.
+First, download the `pylinkwrapper` folder and place it somewhere that's in your python path. You can set a path in psychopy for additional module imports under the options.
 
 Then, include the following `import` command at the top of your experiment script: 
 ```python
-from pylinkwrapper import eyeLinkFuns
+import pylinkwrapper
 ```
 
-Finally, initiate an instance of eyeLinkFuns providing your window object and EDF filename.
+Finally, initiate the connection to the EyeLink providing your window object and EDF filename.
 ```python
 win = visual.window(monitor = 'nickMon', fullScr = True, allowGUI = False, color = -1)
-tracker = pylinkwrapper.eyeLinkFuns(win, '1_nd')
+tracker = pylinkwrapper.connect(win, '1_nd')
 ```
 
 ## Functions
@@ -27,6 +27,8 @@ Here's a list of the functions currently in the wrapper. See each functions `hel
 * `.setTrialResult()` : Indiciates the end of an experimental trial in the EDF. Sets TRIAL_RESULT to 0.
 * `.endExperiment()` : Closes the EDF file and transfers it to the provided path on the display computer.
 * `.fixCheck()` : Pauses experiment until fixation at the center of the screen has been held for a given amount of time.
+* `.sendMessage()` : Sends a message to the EDF file
+* `.sendCommand()` : Sends a command to the EyeLink
 
 ## Example
 An very simple experiment that shows how to use the above functions is provided in `eyetest.py`.
