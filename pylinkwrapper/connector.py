@@ -9,8 +9,8 @@ class connect(object):
     """Provides functions for interacting with the EyeLink via Pylink.
     
         Parameters
-            window  -- Psychopy window object that the experiment uses.
-            edfname -- Desired name of the EDF file.
+            window  -- Psychopy window object that the experiment uses
+            edfname -- Desired name of the EDF file
     """
 
     def __init__(self, window, edfname):
@@ -93,18 +93,26 @@ class connect(object):
         '''Sends message that indicates start of trial in EDF.
         
         Parameters
-            idval = Values to set TRIALID. Defaults to 1.
+            idval = Values to set TRIALID. Defaults to 1
         '''
         
         tid = 'TRIALID {}'.format(idval)
         self.tracker.sendMessage(tid)
         
-    def recordON(self):
-        '''Starts recording, waits 50ms to allow eyelink to prepare.'''
+    def recordON(self, sendlink = False):
+        '''Starts recording, waits 50ms to allow eyelink to prepare.
+        
+        Parameters
+            sendlink -- Toggle for sending eye data over the link to the       
+                        display computer during recording. Defaults to False
+        '''
         
         self.tracker.sendCommand('set_idle_mode')
         time.sleep(.05)
-        self.tracker.startRecording(1, 1, 0, 0)
+        if sendlink:
+            self.tracker.startRecording(1, 1, 1, 1)
+        else:
+            self.tracker.startRecording(1, 1, 0, 0)
 
     def recordOFF(self):
         '''Stops recording.'''
@@ -112,7 +120,7 @@ class connect(object):
         self.tracker.stopRecording()
         
     def drawIA(self, x, y, size, index, color, name):
-        '''Draws square interest area in EDF and a  corresponding filled box on
+        '''Draws square interest area in EDF and a corresponding filled box on
            eye-tracker display.
         
         Parameters
@@ -145,7 +153,7 @@ class connect(object):
         '''Sends trial variable to EDF file.
         
         Parameters
-            name  -- string for name of variable.
+            name  -- string for name of variable
             value -- string or number for variable value
         '''
         
@@ -160,8 +168,8 @@ class connect(object):
            screen on EyeLink Display.
            
         Parameters
-            rval   -- Value to set for TRIAL_RESULT. Defaults to 0.
-            scrcol -- Color to clear screen to. Defaults to 0 (black).
+            rval   -- Value to set for TRIAL_RESULT. Defaults to 0
+            scrcol -- Color to clear screen to. Defaults to 0 (black)
         '''
         
         trmsg = 'TRIAL_RESULT {}'.format(rval)
@@ -174,7 +182,8 @@ class connect(object):
         '''Closes and transfers the EDF file.
         
         Parameters
-            spath -- File path of where to save EDF file. Include trailing \
+            spath -- File path of where to save EDF file. Include trailing 
+                     slash
         '''
         
         # File transfer and cleanup!

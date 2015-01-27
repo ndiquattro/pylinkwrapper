@@ -39,7 +39,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		self.__target_beep__done__ = sound.Sound(1200, secs = .1)
 		self.__target_beep__error__ = sound.Sound(400, secs = .1)
 		
-		# Image drawing variables
+		# Image drawing variables (used later)
 		self.rgb_index_array = None
 		self.imagetitlestim = None
 		self.imgstim_size = None
@@ -156,7 +156,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 			elif char == "right":
 				pylink_key = pylink.CURS_RIGHT
 			else:
-				print('Error! :{}'.format(char))
+				print('Error! :{} is not a used key.'.format(char))
 				return
 				
 			ky.append(pylink.KeyInput(pylink_key, 0))
