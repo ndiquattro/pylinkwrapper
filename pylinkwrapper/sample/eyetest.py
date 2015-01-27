@@ -5,6 +5,9 @@ N. DiQuattro - January 2015
 This is a simple experiment where a circle appears randomly on the screen. It's
 purpose is to provide examples of how to use the pylink wrapper with a psychopy
 experiment.
+
+There's help documentaiton available for each of the functions that show the
+available parameters. 
 '''
 
 # Import modules
