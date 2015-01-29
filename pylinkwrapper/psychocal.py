@@ -44,6 +44,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		self.imagetitlestim = None
 		self.imgstim_size = None
 		self.eye_image = None
+		self.lineob = None
 
 		# Define tracker
 		self.setTracker(tracker)
@@ -112,9 +113,22 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		else: return (0,0,0,0)
 
 	def draw_line(self, x1, y1, x2, y2, colorindex):
-		pass
+		# Convert to psychopy coordinates
+		x1 = x1 - (self.sres[0] / 2)
+		x2 = x2 - (self.sres[0] / 2)
+		y1 = -(y1 - (self.sres[1] / 2))
+		y2 = -(y2 - (self.sres[1] / 2))
+		
+		if self.lineob is None:
+			self.lineob = visual.Line(self.window, (x1, y1), (x2, y2),
+									lineColor = 1, units = 'pix')
+		else:
+			self.lineob.setStart = (x1, y1)
+			self.lineob.setEnd = (x2, y2)
+		#pass
 
 	def draw_lozenge(self, x, y, width, height, colorindex):
+		#print 'Draw lozenge'
 		pass
 
 	def get_mouse_state(self):
@@ -171,13 +185,15 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		
 	def setup_image_display(self, width, height):
 		
-		self.size = (width, height)
+		self.size = (width/2, height/2)
+		print(self.size)
 		self.clear_cal_display()
 		self.last_mouse_state = -1
 		
 		# Create array to hold image data later
 		if self.rgb_index_array is None:
-			self.rgb_index_array =  np.zeros((height, width), dtype = np.uint8)
+			#self.rgb_index_array =  np.zeros((height, width), dtype = np.uint8)
+			self.rgb_index_array =  np.zeros((self.size[1], self.size[0]), dtype = np.uint8)
 		
 	def image_title(self,  text):
 		# Display or update Pupil/CR info on image screen 
@@ -203,7 +219,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 										mode = 'P')
 			# Resize Image							
 			if self.imgstim_size is None:
-				maxsz = self.sres[0] / 2
+				maxsz = self.sres[0]/2
 				mx = 1.0
 				while (mx+1) * self.size[0] <= maxsz:
 					mx += 1.0
@@ -213,10 +229,15 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 			# Save image as a temporay file
 			tfile = os.path.join(tempfile.gettempdir(),'_eleye.png')
 			image.save(tfile, 'PNG')
+
+			# Need this for target distance to show up
+			self.draw_cross_hair()
 			
 			# Create eye image
 			if self.eye_image is None:
-				self.eye_image = visual.ImageStim(self.window, tfile)
+				self.eye_image = visual.ImageStim(self.window, tfile,
+													size = self.imgstim_size,
+													units = 'pix')
 			else:
 				self.eye_image.setImage(tfile)
 	
