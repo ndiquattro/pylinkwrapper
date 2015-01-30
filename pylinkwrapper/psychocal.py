@@ -45,6 +45,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		self.imgstim_size = None
 		self.eye_image = None
 		self.lineob = None
+		self.loz = None
 
 		# Define tracker
 		self.setTracker(tracker)
@@ -105,12 +106,12 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 			self.__target_beep__done__.play()
 		
 	def getColorFromIndex(self, colorindex):
-		if colorindex   ==  pylink.CR_HAIR_COLOR: return (255,255,255,255)
-		elif colorindex ==  pylink.PUPIL_HAIR_COLOR: return (255,255,255,255)
-		elif colorindex ==  pylink.PUPIL_BOX_COLOR:        return (0,255,0,255)
-		elif colorindex ==  pylink.SEARCH_LIMIT_BOX_COLOR: return (255,0,0,255)
-		elif colorindex ==  pylink.MOUSE_CURSOR_COLOR:     return (255,0,0,255)
-		else: return (0,0,0,0)
+		if colorindex   ==  pylink.CR_HAIR_COLOR: return (1, 1, 1)
+		elif colorindex ==  pylink.PUPIL_HAIR_COLOR: return (1, 1, 1)
+		elif colorindex ==  pylink.PUPIL_BOX_COLOR:        return (-1,1,-1)
+		elif colorindex ==  pylink.SEARCH_LIMIT_BOX_COLOR: return (1,-1,-1)
+		elif colorindex ==  pylink.MOUSE_CURSOR_COLOR:     return (1,-1,-1)
+		else: return (-1,-1,-1)
 
 	def draw_line(self, x1, y1, x2, y2, colorindex):
 		# Convert to psychopy coordinates
@@ -121,16 +122,33 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		
 		if self.lineob is None:
 			self.lineob = visual.Line(self.window, (x1, y1), (x2, y2),
-									lineColor = 1, units = 'pix')
+									lineColor = -1,
+									units = 'pix')
 		else:
+			self.lineob.setLineColor(self.getColorFromIndex(colorindex))
 			self.lineob.setStart = (x1, y1)
 			self.lineob.setEnd = (x2, y2)
-		#pass
+			
+			
+		#print(self.lineob.start)
+		#print(self.lineob.end)	
+		self.lineob.draw()
 
 	def draw_lozenge(self, x, y, width, height, colorindex):
-		#print 'Draw lozenge'
-		pass
+		# Convert to psychopy coordinates
+		x = x - (self.sres[0] / 2)
+		y = -(y - (self.sres[1] / 2))
 
+		if self.loz is None:
+			self.loz = visual.Rect(self.window, width, height, pos = (x, y),
+								fillColor = self.getColorFromIndex(colorindex),
+								units = 'pix')
+		else:
+			self.loz.setPos((x, y))
+			self.loz.setFillColor(self.getColorFromIndex(colorindex))
+			
+		self.loz.draw()
+		
 	def get_mouse_state(self):
 		pass
 
@@ -186,14 +204,13 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 	def setup_image_display(self, width, height):
 		
 		self.size = (width/2, height/2)
-		print(self.size)
 		self.clear_cal_display()
 		self.last_mouse_state = -1
 		
 		# Create array to hold image data later
 		if self.rgb_index_array is None:
-			#self.rgb_index_array =  np.zeros((height, width), dtype = np.uint8)
-			self.rgb_index_array =  np.zeros((self.size[1], self.size[0]), dtype = np.uint8)
+			self.rgb_index_array =  np.zeros((self.size[1], self.size[0]),
+											dtype = np.uint8)
 		
 	def image_title(self,  text):
 		# Display or update Pupil/CR info on image screen 
@@ -231,7 +248,9 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 			image.save(tfile, 'PNG')
 
 			# Need this for target distance to show up
+			self.__img__ = image
 			self.draw_cross_hair()
+			self.__img__ = None
 			
 			# Create eye image
 			if self.eye_image is None:
@@ -245,6 +264,11 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 			self.eye_image.draw()
 			if self.imagetitlestim:
 				self.imagetitlestim.draw()
+			if self.loz:
+				self.loz.draw()
+			if self.lineob:
+				self.lineob.draw()
+
 			self.window.flip()      
 					
 	def set_image_palette(self, r, g, b):
