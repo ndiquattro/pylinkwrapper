@@ -1,5 +1,6 @@
 # Define custom calibration display using Psychopy
 from psychopy import core, event, sound, visual
+from psychopy.tools.monitorunittools import deg2pix
 import pylink
 import scipy
 import numpy as np
@@ -16,6 +17,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		# Set up window
 		self.window = window
 		self.window.flip(clearBuffer = True)
+		self.mouse = None
 		
 		# Define stimuli
 		self.backcolor = window.color
@@ -114,43 +116,109 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		else: return (-1,-1,-1)
 
 	def draw_line(self, x1, y1, x2, y2, colorindex):
-		# Convert to psychopy coordinates
-		x1 = x1 - (self.sres[0] / 2)
-		x2 = x2 - (self.sres[0] / 2)
-		y1 = -(y1 - (self.sres[1] / 2))
-		y2 = -(y2 - (self.sres[1] / 2))
-		
-		if self.lineob is None:
-			self.lineob = visual.Line(self.window, (x1, y1), (x2, y2),
-									lineColor = -1,
-									units = 'pix')
-		else:
-			self.lineob.setLineColor(self.getColorFromIndex(colorindex))
-			self.lineob.setStart = (x1, y1)
-			self.lineob.setEnd = (x2, y2)
-			
-			
-		#print(self.lineob.start)
-		#print(self.lineob.end)	
-		self.lineob.draw()
+		pass
+# 		# Convert to psychopy coordinates
+# 		x1 = x1 - (self.sres[0] / 2)
+# 		x2 = x2 - (self.sres[0] / 2)
+# 		y1 = -(y1 - (self.sres[1] / 2))
+# 		y2 = -(y2 - (self.sres[1] / 2))
+# 		
+# 		Convert to image centerted x,y
+# 		x1 = int((float(x1) / float(self.size[0])) * self.imgstim_size[0])
+# 		x2 = int((float(x2) / float(self.size[0])) * self.imgstim_size[0])
+# 		y1 = int((float(y1) / float(self.size[1])) * self.imgstim_size[1])
+# 		y2 = int((float(y2) / float(self.size[1])) * self.imgstim_size[1])
+# 		
+# 		# Get Color
+# 		linecol = self.getColorFromIndex(colorindex)
+# 		
+# 		# Define object
+# 		if self.lineob is None:
+# 			self.lineob = visual.Line(self.window, (x1, y1), (x2, y2),
+# 									lineColor = linecol,
+# 									units = 'pix')
+# 		else:
+# 			self.lineob.setLineColor(linecol)
+# 			self.lineob.setStart = (x1, y1)
+# 			self.lineob.setEnd = (x2, y2)
+# 			
+# 		#Draw	
+# 		self.lineob.draw()
 
 	def draw_lozenge(self, x, y, width, height, colorindex):
-		# Convert to psychopy coordinates
-		x = x - (self.sres[0] / 2)
-		y = -(y - (self.sres[1] / 2))
+		pass
+# 		# Convert to psychopy coordinates
+# 		x = x - (self.sres[0] / 2)
+# 		y = -(y - (self.sres[1] / 2))
+# 		
+# 		# Convert to image centered coords
+# 		x = int((float(x) / float(self.size[0])) * self.imgstim_size[0])
+# 		width = int((float(width) / float(self.size[0])) * self.imgstim_size[0])
+# 		y = int((float(y) / float(self.size[1])) * self.imgstim_size[1])
+# 		height = int((float(height)/float(self.size[1])) * self.imgstim_size[1])
+# 		#print width, height
+# 
+# 		# Get Color
+# 		lozcol = self.getColorFromIndex(colorindex)
+# 		
+# 		x = 0
+# 		y = 0
+# 
+# 		# Draw objects
+# 		if width > height:
+# 			rad = height/2
+# 			
+# 			# draw the lines
+# 			visual.Line(self.window, (x+rad, y), (x+width-rad, y),
+# 						lineColor = lozcol, units = 'pix').draw()
+# 			visual.Line(self.window, (x+rad, y+height), (x+width-rad, y+height),
+# 						lineColor = lozcol, units = 'pix').draw()
+# 			
+# 			# draw semicircles			
+# 			pos = (x+rad, y+rad)
+# 			visual.Circle(self.window, rad, pos = pos,
+# 							fillColor = lozcol, units = 'pix').draw()
+# 			
+# 			pos = ((x+width)-rad, y+rad)
+# 			visual.Circle(self.window, rad, pos = pos,
+# 							fillColor = lozcol, units = 'pix').draw()
+# 		else:
+# 			rad = width/2
+# 
+# 			#draw the lines
+# 			visual.Line(self.window, (x, y+rad), (x, y+height-rad),
+# 						lineColor = lozcol, units = 'pix').draw()
+# 			visual.Line(self.window, (x+width, y+rad), (x+width, y+height-rad),
+# 						lineColor = lozcol, units = 'pix').draw()
+# 
+# 			#draw semicircles
+# 			if rad == 0: 
+# 				return #cannot draw sthe circle with 0 radius
+# 			pos = (x+rad, y+rad)
+# 			visual.Circle(self.window, rad, pos = pos,
+# 							fillColor = lozcol, units = 'pix').draw()
+# 
+# 			pos = (x+rad, y+height-rad)
+# 			visual.Circle(self.window, rad, pos = pos,
+# 							fillColor = lozcol, units = 'pix').draw()
 
-		if self.loz is None:
-			self.loz = visual.Rect(self.window, width, height, pos = (x, y),
-								fillColor = self.getColorFromIndex(colorindex),
-								units = 'pix')
-		else:
-			self.loz.setPos((x, y))
-			self.loz.setFillColor(self.getColorFromIndex(colorindex))
-			
-		self.loz.draw()
 		
 	def get_mouse_state(self):
-		pass
+		# Estabish mouse
+		if self.mouse is None:
+			self.mouse = event.Mouse()
+			
+		# Get mouse state
+		mpos = self.mouse.getPos()
+		mpre = self.mouse.getPressed()
+		
+		# Convert mpos to EyeLink coordinates
+		mpos = [int(deg2pix(x, self.window.monitor)) for x in mpos]
+		mpos = (int(mpos[0] + (self.sres[0] / 2)),
+				int(mpos[1] + (self.sres[1] / 2)))
+		
+		# Return
+		return (mpos, mpre[0])
 
 	def get_input_key(self):
 		ky = []
@@ -264,11 +332,8 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 			self.eye_image.draw()
 			if self.imagetitlestim:
 				self.imagetitlestim.draw()
-			if self.loz:
-				self.loz.draw()
-			if self.lineob:
-				self.lineob.draw()
-
+				
+			# Display
 			self.window.flip()      
 					
 	def set_image_palette(self, r, g, b):
