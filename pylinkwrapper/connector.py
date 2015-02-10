@@ -54,12 +54,16 @@ class connect(object):
         disptxt = 'DISPLAY_COORDS 0 0 {} {}'.format(*self.sres)
         self.tracker.sendMessage(disptxt)
 
-    def calibrate(self, cnum = 13):
+    def calibrate(self, cnum = 13, paval = 1000):
         '''Calibrates eye-tracker using psychopy stimuli.
         
         Parameters
-            cnum -- Number of points to use for calibration. Default is 13.
-                    Options: 3, 5, 9, 13
+            cnum  -- Number of points to use for calibration. Default is 
+                     13.
+                     Options: 3, 5, 9, 13
+                     
+            paval -- Pacing of calibraiton, i.e., how long you have to      
+                     fixate each target.
         '''
         
         # Generate custom calibration stimuli
@@ -70,6 +74,9 @@ class connect(object):
             # Set calibration type
             calst = 'HV{}'.format(cnum)
             self.tracker.setCalibrationType(calst)
+            
+            # Set calibraiton pacing
+            self.tracker.setAutoCalibrationPacing(paval)
             
             # Execute custom calibration display
             pylink.openGraphicsEx(genv)
@@ -195,6 +202,7 @@ class connect(object):
         
         #Close the file and transfer it to Display PC
         self.tracker.closeDataFile()
+        time.sleep(1)
         self.tracker.receiveDataFile(self.edfname, fpath)
         self.tracker.close()
         

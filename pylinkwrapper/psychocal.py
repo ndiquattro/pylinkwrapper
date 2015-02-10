@@ -123,7 +123,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 # 		y1 = -(y1 - (self.sres[1] / 2))
 # 		y2 = -(y2 - (self.sres[1] / 2))
 # 		
-# 		Convert to image centerted x,y
+# 		#Convert to image centerted x,y
 # 		x1 = int((float(x1) / float(self.size[0])) * self.imgstim_size[0])
 # 		x2 = int((float(x2) / float(self.size[0])) * self.imgstim_size[0])
 # 		y1 = int((float(y1) / float(self.size[1])) * self.imgstim_size[1])
@@ -204,21 +204,22 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 
 		
 	def get_mouse_state(self):
-		# Estabish mouse
-		if self.mouse is None:
-			self.mouse = event.Mouse()
-			
-		# Get mouse state
-		mpos = self.mouse.getPos()
-		mpre = self.mouse.getPressed()
-		
-		# Convert mpos to EyeLink coordinates
-		mpos = [int(deg2pix(x, self.window.monitor)) for x in mpos]
-		mpos = (int(mpos[0] + (self.sres[0] / 2)),
-				int(mpos[1] + (self.sres[1] / 2)))
-		
-		# Return
-		return (mpos, mpre[0])
+		pass
+# 		# Estabish mouse
+# 		if self.mouse is None:
+# 			self.mouse = event.Mouse()
+# 			
+# 		# Get mouse state
+# 		mpos = self.mouse.getPos()
+# 		mpre = self.mouse.getPressed()
+# 		
+# 		# Convert mpos to EyeLink coordinates
+# 		mpos = [int(deg2pix(x, self.window.monitor)) for x in mpos]
+# 		mpos = (int(mpos[0] + (self.sres[0] / 2)),
+# 				int(mpos[1] + (self.sres[1] / 2)))
+# 		
+# 		# Return
+# 		return (mpos, mpre[0])
 
 	def get_input_key(self):
 		ky = []
@@ -267,7 +268,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
 		self.clear_cal_display()
 		
 	def alert_printf(self,msg): 
-		print "alert_printf"
+		print "alert_printf %s" % msg
 		
 	def setup_image_display(self, width, height):
 		
