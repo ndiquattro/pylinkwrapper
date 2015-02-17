@@ -288,3 +288,15 @@ class connect(object):
         # Send Command
         self.tracker.sendCommand(cmd)
         
+    def drawText(self, msg):
+        '''Draws text on eye-tracker screen
+        
+        Parameters
+            msg -- String that contains text.
+        '''
+        # Figure out center
+        x = self.sres[0] / 2
+        
+        # Send message
+        txt = '"{}"'.format(msg)
+        self.tracker.drawText(text, (x, 50))
