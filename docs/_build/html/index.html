@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to pylinkwrapper’s documentation! &mdash; pylinkwrapper 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pylinkwrapper 1.0 documentation" href="#" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pylinkwrapper 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-pylinkwrapper-s-documentation">
+<h1>Welcome to pylinkwrapper&#8217;s documentation!<a class="headerlink" href="#welcome-to-pylinkwrapper-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-pylinkwrapper"></span><dl class="class">
+<dt id="pylinkwrapper.connect">
+<em class="property">class </em><code class="descclassname">pylinkwrapper.</code><code class="descname">connect</code><span class="sig-paren">(</span><em>window</em>, <em>edfname</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides functions for interacting with the EyeLink via Pylink.</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd>window  &#8211; Psychopy window object that the experiment uses
+edfname &#8211; Desired name of the EDF file</dd>
+</dl>
+<dl class="method">
+<dt id="pylinkwrapper.connect.calibrate">
+<code class="descname">calibrate</code><span class="sig-paren">(</span><em>cnum=13</em>, <em>paval=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.calibrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calibrates eye-tracker using psychopy stimuli.</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd><dl class="first last docutils">
+<dt>cnum  &#8211; Number of points to use for calibration. Default is </dt>
+<dd>13.
+Options: 3, 5, 9, 13</dd>
+<dt>paval &#8211; Pacing of calibraiton, i.e., how long you have to      </dt>
+<dd>fixate each target.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.drawIA">
+<code class="descname">drawIA</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>size</em>, <em>index</em>, <em>color</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.drawIA" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Draws square interest area in EDF and a corresponding filled box on</dt>
+<dd>eye-tracker display.</dd>
+<dt>Parameters</dt>
+<dd>x, y  &#8211; x and y coordinates in degrees visual angle
+size  &#8211; length of one edge of square in degrees visual angle
+index &#8211; number to assign interest area in EDF
+color &#8211; color of box drawn on eye-tracker display (0 - 15)
+name  &#8211; string to name interest area in EDF</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.drawText">
+<code class="descname">drawText</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.drawText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws text on eye-tracker screen</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd>msg &#8211; String that contains text.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.endExperiment">
+<code class="descname">endExperiment</code><span class="sig-paren">(</span><em>spath</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.endExperiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes and transfers the EDF file.</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd><dl class="first last docutils">
+<dt>spath &#8211; File path of where to save EDF file. Include trailing </dt>
+<dd>slash</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.fixCheck">
+<code class="descname">fixCheck</code><span class="sig-paren">(</span><em>size</em>, <em>ftime</em>, <em>button</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.fixCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that fixation is maintained for certain time.</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd>size   &#8211; length of one side of box in degrees visual angle
+ftime  &#8211; length of time to check for fixation in seconds
+button &#8211; key to press to recalibrate eye-tracker</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.recordOFF">
+<code class="descname">recordOFF</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.recordOFF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops recording.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.recordON">
+<code class="descname">recordON</code><span class="sig-paren">(</span><em>sendlink=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.recordON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts recording, waits 50ms to allow eyelink to prepare.</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd><dl class="first last docutils">
+<dt>sendlink &#8211; Toggle for sending eye data over the link to the       </dt>
+<dd>display computer during recording. Defaults to False</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.sendCommand">
+<code class="descname">sendCommand</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.sendCommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a command to EyeLink</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd>cmd &#8211; String that contains the command</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.sendMessage">
+<code class="descname">sendMessage</code><span class="sig-paren">(</span><em>txt</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.sendMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a message to the tracker that is recorded in the EDF</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd>txt &#8211; String that contains the message</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.sendVar">
+<code class="descname">sendVar</code><span class="sig-paren">(</span><em>name</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.sendVar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends trial variable to EDF file.</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd>name  &#8211; string for name of variable
+value &#8211; string or number for variable value</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.setStatus">
+<code class="descname">setStatus</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.setStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets status message to appear while recording.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<em>str</em>) &#8211; Text object to send, must be &lt; 80 char</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.setTrialID">
+<code class="descname">setTrialID</code><span class="sig-paren">(</span><em>idval=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.setTrialID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends message that indicates start of trial in EDF.</p>
+<dl class="docutils">
+<dt>Parameters</dt>
+<dd>idval = Values to set TRIALID. Defaults to 1</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pylinkwrapper.connect.setTrialResult">
+<code class="descname">setTrialResult</code><span class="sig-paren">(</span><em>rval=0</em>, <em>scrcol=0</em><span class="sig-paren">)</span><a class="headerlink" href="#pylinkwrapper.connect.setTrialResult" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Sends trial result to indiciate trial end in EDF and clears    </dt>
+<dd>screen on EyeLink Display.</dd>
+<dt>Parameters</dt>
+<dd>rval   &#8211; Value to set for TRIAL_RESULT. Defaults to 0
+scrcol &#8211; Color to clear screen to. Defaults to 0 (black)</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to pylinkwrapper&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pylinkwrapper 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Nick DiQuattro.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>
