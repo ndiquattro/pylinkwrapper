@@ -5,6 +5,7 @@ import time
 from psychopy.tools.monitorunittools import deg2pix
 from psychopy import event
 
+
 class connect(object):
     """
     Provides functions for interacting with the EyeLink via Pylink.
@@ -28,7 +29,10 @@ class connect(object):
         except:
             self.tracker = pylink.EyeLink(None)
             self.realconnect = False
-            
+
+        # Check which eye is being recorded
+        self.eye_used = self.tracker.eyeAvailable()
+
         # Make pylink accessible
         self.pylink = pylink
         
@@ -248,12 +252,7 @@ class connect(object):
         
         # Begin recording
         self.tracker.startRecording(0, 0, 1, 1)
-        
-        # Check which eye is being recorded
-        eye_used = self.tracker.eyeAvailable()
-        RIGHT_EYE = 1
-        LEFT_EYE = 0
-        
+
         # Begin polling
         keys = []
         fixtime = time.clock()
@@ -266,14 +265,7 @@ class connect(object):
                 self.calibrate()
                 break 
             
-            # Grab latest sample
-            sample = self.tracker.getNewestSample()
-            
-            # Extract gaze coordinates
-            if eye_used == RIGHT_EYE:
-                gaze = sample.getRightEye().getGaze()
-            else:
-                gaze = sample.getLeftEye().getGaze()
+            gaze = self.getGaze()
                 
             # Are we in the box?
             if xbdr[0] < gaze[0] < xbdr[1] and ybdr[0] < gaze[1] < ybdr[1]:
@@ -320,4 +312,22 @@ class connect(object):
         
         # Send message
         txt = '"{}"'.format(msg)
-        self.tracker.drawText(text, (x, 50))
+        self.tracker.drawText(txt, (x, 50))
+
+    def getGaze(self):
+        ''' Get current gaze position of eye. Assumes recording is on.
+        :return:
+            Tuple of x, y of gaze
+        '''
+
+        if self.realconnect:
+            # Grab latest sample
+            sample = self.tracker.getNewestSample()
+
+            # Extract gaze coordinates
+            if self.eye_used == 1:
+                gaze = sample.getRightEye().getGaze()
+            else:
+                gaze = sample.getLeftEye().getGaze()
+
+            return gaze
