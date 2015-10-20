@@ -87,12 +87,12 @@ class connect(object):
             genv.dummynote()
         
     def setStatus(self, message):
-        '''Sets status message to appear while recording.
-        
-        Parameters
-            message -- Text object to send, must be < 80 char
-        '''
-        
+        """
+        Sets status message to appear while recording.
+
+        :param message: Text object to send, must be < 80 char
+        :type message: str
+        """
         msg = "record_status_message '{}'".format(message)
         self.tracker.sendCommand(msg)
         
