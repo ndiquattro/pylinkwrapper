@@ -13,6 +13,7 @@ Contents:
 
    installation
    connector
+   sample
 
 Indices and tables
 ==================

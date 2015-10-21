@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sample Experiment &mdash; pylinkwrapper 1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="pylinkwrapper 1.0 documentation" href="index.html"/>
+        <link rel="prev" title="Connector Class" href="connector.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="index.html" class="icon icon-home"> pylinkwrapper
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connector.html">Connector Class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Sample Experiment</a></li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">pylinkwrapper</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Sample Experiment</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/sample.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="sample-experiment">
+<h1>Sample Experiment<a class="headerlink" href="#sample-experiment" title="Permalink to this headline">¶</a></h1>
+<p>This is a very simple experiment that demonstrates use of pylinkwrapper. It can
+be found in the <code class="file docutils literal"><span class="pre">sample</span></code> folder.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Pylink Wrapper test experiment</span>
+<span class="sd">N. DiQuattro - January 2015</span>
+
+<span class="sd">This is a simple experiment where a circle appears randomly on the screen. It&#39;s</span>
+<span class="sd">purpose is to provide examples of how to use the pylink wrapper with a psychopy</span>
+<span class="sd">experiment.</span>
+
+<span class="sd">There&#39;s help documentaiton available for each of the functions that show the</span>
+<span class="sd">available parameters. </span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c"># Import modules</span>
+<span class="kn">from</span> <span class="nn">psychopy</span> <span class="kn">import</span> <span class="n">visual</span>
+<span class="kn">from</span> <span class="nn">psychopy</span> <span class="kn">import</span> <span class="n">core</span><span class="p">,</span> <span class="n">event</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">pylinkwrapper</span><span class="c"># Here&#39;s the special one</span>
+
+<span class="c"># Window set-up</span>
+<span class="n">win</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">Window</span><span class="p">(</span><span class="n">monitor</span> <span class="o">=</span> <span class="s">&#39;nickMon&#39;</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="s">&#39;deg&#39;</span><span class="p">,</span> <span class="n">fullscr</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+                    <span class="n">allowGUI</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c"># Initiate eye-tracker link and open EDF</span>
+<span class="n">tracker</span> <span class="o">=</span> <span class="n">pylinkwrapper</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">win</span><span class="p">,</span> <span class="s">&#39;1_test&#39;</span><span class="p">)</span> 
+
+<span class="c"># Calibrate eye-tracker</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">calibrate</span><span class="p">()</span>
+
+<span class="c"># Stimulus</span>
+<span class="n">fix</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">win</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">fillColor</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="n">lineColor</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+                    
+<span class="n">cfix</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">win</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="o">.</span><span class="mi">15</span><span class="p">,</span> <span class="n">fillColor</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">lineColor</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c"># Display stimulus 5 times</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+
+    <span class="c"># Find random coordinates and set them</span>
+    <span class="n">fx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">fy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">fix</span><span class="o">.</span><span class="n">setPos</span><span class="p">((</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">))</span>
+   
+    <span class="c"># Eye tracker trial set-up</span>
+    <span class="n">stxt</span> <span class="o">=</span> <span class="s">&#39;Trial </span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">t</span>
+    <span class="n">tracker</span><span class="o">.</span><span class="n">setStatus</span><span class="p">(</span><span class="n">stxt</span><span class="p">)</span>  <span class="c">#  Define status message that appears on eye-link</span>
+                             <span class="c">#  display</span>
+                             
+    <span class="n">tracker</span><span class="o">.</span><span class="n">setTrialID</span><span class="p">()</span>  <span class="c"># Sends trial start message for EDF</span>
+    <span class="n">tracker</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">(</span><span class="s">&#39;Circle Trial&#39;</span><span class="p">)</span>
+    
+    <span class="c"># Draw IA</span>
+    <span class="n">tracker</span><span class="o">.</span><span class="n">drawIA</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&#39;circle&#39;</span><span class="p">)</span>  <span class="c"># Draw interest area and box</span>
+     
+    <span class="c"># Start recording</span>
+    <span class="n">tracker</span><span class="o">.</span><span class="n">recordON</span><span class="p">()</span>
+
+    <span class="c"># Draw and display circle</span>
+    <span class="n">cfix</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">fix</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+   
+    <span class="c"># Wait for response </span>
+    <span class="n">keyp</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">waitKeys</span><span class="p">()</span>
+    
+    <span class="c"># Stop Recording</span>
+    <span class="n">tracker</span><span class="o">.</span><span class="n">recordOFF</span><span class="p">()</span>
+    
+    <span class="c"># Send response key to EDF file</span>
+    <span class="n">tracker</span><span class="o">.</span><span class="n">sendVar</span><span class="p">(</span><span class="s">&#39;response&#39;</span><span class="p">,</span> <span class="n">keyp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c"># End trial for EDF</span>
+    <span class="n">tracker</span><span class="o">.</span><span class="n">setTrialResult</span><span class="p">()</span>
+    
+    <span class="c"># ISI with fixation check</span>
+    <span class="n">cfix</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+    <span class="n">tracker</span><span class="o">.</span><span class="n">fixCheck</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;z&#39;</span><span class="p">)</span>
+
+<span class="c"># Retrieve EDF</span>
+<span class="n">tracker</span><span class="o">.</span><span class="n">endExperiment</span><span class="p">(</span><span class="s">&#39;C:</span><span class="se">\\</span><span class="s">edfs</span><span class="se">\\</span><span class="s">&#39;</span><span class="p">)</span>  <span class="c"># Closes and retrieves EDF file to</span>
+                                     <span class="c"># specified path</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="connector.html" class="btn btn-neutral" title="Connector Class" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Nick DiQuattro.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
