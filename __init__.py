@@ -1,2 +1,2 @@
 # Initialize functions class
-from pylinkwrapper.connector import connect
+from pylinkwrapper.connector import Connect

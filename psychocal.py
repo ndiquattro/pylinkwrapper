@@ -1,6 +1,5 @@
 # Define custom calibration display using Psychopy
-from psychopy import core, event, sound, visual
-from psychopy.tools.monitorunittools import deg2pix
+from psychopy import event, sound, visual
 import pylink
 import scipy
 import numpy as np

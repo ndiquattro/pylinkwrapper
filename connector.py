@@ -6,7 +6,7 @@ from psychopy.tools.monitorunittools import deg2pix
 from psychopy import event
 
 
-class connect(object):
+class Connect(object):
     """
     Provides functions for interacting with the EyeLink via Pylink.
 
@@ -17,16 +17,17 @@ class connect(object):
     def __init__(self, window, edfname):
         # Pull out monitor info
         self.sres = window.size
+        self.scenter = [self.sres[0] / 2.0, self.sres[1] / 2.0]
         self.win = window
-        
+
         # Make filename
         self.edfname = edfname + '.edf'
-        
+
         # Initialize connection with eye-tracker
         try:
             self.tracker = pylink.EyeLink()
             self.realconnect = True
-        except:
+        except RuntimeError:
             self.tracker = pylink.EyeLink(None)
             self.realconnect = False
 
@@ -35,25 +36,25 @@ class connect(object):
 
         # Make pylink accessible
         self.pylink = pylink
-        
+
         # Open EDF
-        self.tracker.openDataFile(self.edfname)		
-        pylink.flushGetkeyQueue() 
+        self.tracker.openDataFile(self.edfname)
+        pylink.flushGetkeyQueue()
         self.tracker.setOfflineMode()
 
         # Set content of edf file
         eftxt = 'LEFT,RIGHT,FIXATION,SACCADE,BLINK,MESSAGE,BUTTON,INPUT'
         self.tracker.sendCommand('file_event_filter = ' + eftxt)
-    
+
         lftxt = 'LEFT,RIGHT,FIXATION,SACCADE,BLINK,BUTTON'
         self.tracker.sendCommand('link_event_filter = ' + lftxt)
-        
+
         lstxt = 'LEFT,RIGHT,GAZE,GAZERES,AREA,STATUS,HTARGET'
         self.tracker.sendCommand('link_sample_data = ' + lstxt)
-        
-        fstxt ='LEFT,RIGHT,GAZE,AREA,GAZERES,STATUS,HTARGET,INPUT'
+
+        fstxt = 'LEFT,RIGHT,GAZE,AREA,GAZERES,STATUS,HTARGET,INPUT'
         self.tracker.sendCommand('file_sample_data = ' + fstxt)
-        
+
         # Set display coords for dataviewer
         disptxt = 'DISPLAY_COORDS 0 0 {} {}'.format(*self.sres)
         self.tracker.sendMessage(disptxt)
@@ -69,28 +70,28 @@ class connect(object):
                       each target.
         :type paval: int
         """
-        
+
         # Generate custom calibration stimuli
         genv = psychocal.psychocal(self.sres[0], self.sres[1],
-                                    self.tracker, self.win)
-                                    
+                                   self.tracker, self.win)
+
         if self.realconnect:
             # Set calibration type
             calst = 'HV{}'.format(cnum)
             self.tracker.setCalibrationType(calst)
-            
+
             # Set calibraiton pacing
             self.tracker.setAutoCalibrationPacing(paval)
-            
+
             # Execute custom calibration display
             pylink.openGraphicsEx(genv)
-            
+
             # Calibrate
             self.tracker.doTrackerSetup(self.sres[0], self.sres[1])
         else:
             genv.dummynote()
-        
-    def setStatus(self, message):
+
+    def set_status(self, message):
         """
         Sets status message to appear while recording.
 
@@ -99,8 +100,8 @@ class connect(object):
         """
         msg = "record_status_message '{}'".format(message)
         self.tracker.sendCommand(msg)
-        
-    def setTrialID(self, idval=1):
+
+    def set_trialid(self, idval=1):
         """
         Sends message that indicates start of trial in EDF.
 
@@ -109,8 +110,8 @@ class connect(object):
 
         tid = 'TRIALID {}'.format(idval)
         self.tracker.sendMessage(tid)
-        
-    def recordON(self, sendlink=False):
+
+    def record_on(self, sendlink=False):
         """
         Starts recording. Waits 50ms to allow eyelink to prepare.
 
@@ -126,13 +127,13 @@ class connect(object):
         else:
             self.tracker.startRecording(1, 1, 0, 0)
 
-    def recordOFF(self):
+    def record_off(self):
         """
         Stops recording.
         """
         self.tracker.stopRecording()
-        
-    def drawIA(self, x, y, size, index, color, name):
+
+    def draw_ia(self, x, y, size, index, color, name):
         """
         Draws square interest area in EDF and a corresponding filled box on
         eye-tracker display.
@@ -152,14 +153,14 @@ class connect(object):
         """
 
         # Convert units to eyelink space
-        elx = deg2pix(x, self.win.monitor) + (self.sres[0] / 2.0)
-        ely = -(deg2pix(y, self.win.monitor) - (self.sres[1] / 2.0))
+        elx = deg2pix(x, self.win.monitor) + self.scenter[0]
+        ely = -(deg2pix(y, self.win.monitor) - self.scenter[1])
         elsz = deg2pix(size, self.win.monitor) / 2.0
-    
+
         # Make top left / bottom right coordinates for square
         tplf = map(round, [elx - elsz, ely - elsz])
         btrh = map(round, [elx + elsz, ely + elsz])
-    
+
         # Construct command strings
         flist = [index, name, color] + tplf + btrh
         iamsg = '!V IAREA RECTANGLE {0} {3} {4} {5} {6} {1}'.format(*flist)
@@ -168,8 +169,8 @@ class connect(object):
         # Send commands
         self.tracker.sendMessage(iamsg)
         self.tracker.sendCommand(bxmsg)
-        
-    def sendVar(self, name, value):
+
+    def send_var(self, name, value):
         """
         Sends a trial variable to the EDF file.
 
@@ -185,7 +186,7 @@ class connect(object):
         # Send message
         self.tracker.sendMessage(varmsg)
 
-    def setTrialResult(self, rval=0, scrcol=0):
+    def set_trialresult(self, rval=0, scrcol=0):
         """
         Sends trial result to indiciate trial end in EDF and clears screen on
         EyeLink Display.
@@ -193,7 +194,7 @@ class connect(object):
         :param rval: Value to set for TRIAL_RESULT.
         :type rval: float, str, or int
         :param scrcol: Color to clear screen to. Defaults to black.
-        :type scrol: int
+        :type scrcol: int
         """
 
         trmsg = 'TRIAL_RESULT {}'.format(rval)
@@ -202,7 +203,7 @@ class connect(object):
         self.tracker.sendMessage(trmsg)
         self.tracker.sendCommand(cscmd)
 
-    def endExperiment(self, spath):
+    def end_experiment(self, spath):
         """
         Closes and transfers the EDF file.
 
@@ -224,7 +225,7 @@ class connect(object):
         self.tracker.receiveDataFile(self.edfname, fpath)
         self.tracker.close()
 
-    def fixCheck(self, size, ftime, button):
+    def fixcheck(self, size, ftime, button):
         """
         Checks that fixation is maintained for certain time.
 
@@ -237,19 +238,17 @@ class connect(object):
         """
 
         # Calculate Fix check borders
-        cenX = self.sres[0] / 2.0
-        cenY = self.sres[1] / 2.0
         size = deg2pix(size, self.win.monitor) / 2.0
 
-        xbdr = [cenX - size, cenX + size]
-        ybdr = [cenY - size, cenY + size]
+        xbdr = [self.scenter[0] - size, self.scenter[0] + size]
+        ybdr = [self.scenter[1] - size, self.scenter[1] + size]
 
         # Set status message & Draw box
-        self.setStatus('Fixation Check')
+        self.set_status('Fixation Check')
         bxmsg = 'draw_box {} {} {} {} 1'.format(xbdr[0], ybdr[0], xbdr[1],
                                                 ybdr[1])
         self.tracker.sendCommand(bxmsg)
-        
+
         # Begin recording
         self.tracker.startRecording(0, 0, 1, 1)
 
@@ -263,10 +262,10 @@ class connect(object):
             if keys:
                 self.tracker.stopRecording()
                 self.calibrate()
-                break 
-            
-            gaze = self.getGaze()
-                
+                break
+
+            gaze = self.get_gaze()
+
             # Are we in the box?
             if xbdr[0] < gaze[0] < xbdr[1] and ybdr[0] < gaze[1] < ybdr[1]:
                 # Have we been in the box long enough?
@@ -276,8 +275,8 @@ class connect(object):
             else:
                 # Reset clock if not in box
                 fixtime = time.clock()
-                
-    def sendMessage(self, txt):
+
+    def send_message(self, txt):
         """
         Sends a message to the tracker that is recorded in the EDF.
 
@@ -287,8 +286,8 @@ class connect(object):
 
         # Send message
         self.tracker.sendMessage(txt)
-        
-    def sendCommand(self, cmd):
+
+    def send_command(self, cmd):
         """
         Sends a command to the Eyelink.
 
@@ -298,8 +297,8 @@ class connect(object):
 
         # Send Command
         self.tracker.sendCommand(cmd)
-        
-    def drawText(self, msg):
+
+    def draw_text(self, msg):
         """
         Draws text on eye-tracker screen.
 
@@ -308,17 +307,17 @@ class connect(object):
         """
 
         # Figure out center
-        x = self.sres[0] / 2
-        
+        x = self.scenter[0]
+
         # Send message
         txt = '"{}"'.format(msg)
         self.tracker.drawText(txt, (x, 50))
 
-    def getGaze(self):
-        ''' Get current gaze position of eye. Assumes recording is on.
-        :return:
-            Tuple of x, y of gaze
-        '''
+    def get_gaze(self):
+        """
+        Gets current gaze position of eye. Assumes recording is on.
+        :return: list of coordinates in the form of [x, y].
+        """
 
         if self.realconnect:
             # Grab latest sample
@@ -331,3 +330,34 @@ class connect(object):
                 gaze = sample.getLeftEye().getGaze()
 
             return gaze
+
+    def sacdetect(self, x, y, radius):
+        """
+        Checks if current gaze position is outside a circular interest area.
+
+        :param x: X coordinate in degrees visual angle for center of circle IA.
+        :type x: float or int
+        :param y: Y coordinate in degrees visual angle for center of circle IA.
+        :type y: float or int
+        :param radius: Radius of detection circle in degrees visual angle.
+        :type radius: float or int
+        :return: True or False
+        :rtype: bool
+        """
+
+        # Convert coordinates to Eyelink space
+        elx = deg2pix(x, self.win.monitor) + self.scenter[0]
+        ely = -(deg2pix(y, self.win.monitor) - self.scenter[1])
+        elsr = deg2pix(radius, self.win.monitor)
+
+        if self.realconnect:
+            # Get current gaze position
+            gaze = self.get_gaze()
+
+            # Calculate distance of gaze from circle center
+            gdist = ((gaze[0] - elx) ** 2) + ((gaze[1] - ely) ** 2)
+
+            # Compare to radius
+            outcirc = gdist > (elsr ** 2)
+
+            return outcirc
