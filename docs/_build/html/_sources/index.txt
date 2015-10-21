@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pylinkwrapper's documentation!
+Pylinkwrapper's Documentation!
 =========================================
 
 Contents:
@@ -11,9 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: pylinkwrapper
-.. autoclass:: connect
-   :members:
+   installation
+   connector
 
 Indices and tables
 ==================

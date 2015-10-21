@@ -6,11 +6,11 @@ from psychopy.tools.monitorunittools import deg2pix
 from psychopy import event
 
 class connect(object):
-    """Provides functions for interacting with the EyeLink via Pylink.
-    
-        Parameters
-            window  -- Psychopy window object that the experiment uses
-            edfname -- Desired name of the EDF file
+    """
+    Provides functions for interacting with the EyeLink via Pylink.
+
+    :param window: Psychopy window object.
+    :param edfname: Desired name of the EDF file.
     """
 
     def __init__(self, window, edfname):
@@ -54,17 +54,17 @@ class connect(object):
         disptxt = 'DISPLAY_COORDS 0 0 {} {}'.format(*self.sres)
         self.tracker.sendMessage(disptxt)
 
-    def calibrate(self, cnum = 13, paval = 1000):
-        '''Calibrates eye-tracker using psychopy stimuli.
-        
-        Parameters
-            cnum  -- Number of points to use for calibration. Default is 
-                     13.
-                     Options: 3, 5, 9, 13
-                     
-            paval -- Pacing of calibraiton, i.e., how long you have to      
-                     fixate each target.
-        '''
+    def calibrate(self, cnum=13, paval=1000):
+        """
+        Calibrates eye-tracker using psychopy stimuli.
+
+        :param cnum: Number of points to use for calibration. Options are 3, 5,
+                     9, 13.
+        :type cnum: int
+        :param paval: Pacing of calibration, i.e. how long you have to fixate
+                      each target.
+        :type paval: int
+        """
         
         # Generate custom calibration stimuli
         genv = psychocal.psychocal(self.sres[0], self.sres[1],
@@ -96,24 +96,25 @@ class connect(object):
         msg = "record_status_message '{}'".format(message)
         self.tracker.sendCommand(msg)
         
-    def setTrialID(self, idval = 1):
-        '''Sends message that indicates start of trial in EDF.
-        
-        Parameters
-            idval = Values to set TRIALID. Defaults to 1
-        '''
-        
+    def setTrialID(self, idval=1):
+        """
+        Sends message that indicates start of trial in EDF.
+
+        :param idval: Values to set TRIALID.
+        """
+
         tid = 'TRIALID {}'.format(idval)
         self.tracker.sendMessage(tid)
         
-    def recordON(self, sendlink = False):
-        '''Starts recording, waits 50ms to allow eyelink to prepare.
-        
-        Parameters
-            sendlink -- Toggle for sending eye data over the link to the       
-                        display computer during recording. Defaults to False
-        '''
-        
+    def recordON(self, sendlink=False):
+        """
+        Starts recording. Waits 50ms to allow eyelink to prepare.
+
+        :param sendlink: Toggle for sending eye data over the link to the
+                         display computer during recording.
+        :type sendlink: bool
+        """
+
         self.tracker.sendCommand('set_idle_mode')
         time.sleep(.05)
         if sendlink:
@@ -122,22 +123,30 @@ class connect(object):
             self.tracker.startRecording(1, 1, 0, 0)
 
     def recordOFF(self):
-        '''Stops recording.'''
-        
+        """
+        Stops recording.
+        """
         self.tracker.stopRecording()
         
     def drawIA(self, x, y, size, index, color, name):
-        '''Draws square interest area in EDF and a corresponding filled box on
-           eye-tracker display.
-        
-        Parameters
-            x, y  -- x and y coordinates in degrees visual angle
-            size  -- length of one edge of square in degrees visual angle
-            index -- number to assign interest area in EDF
-            color -- color of box drawn on eye-tracker display (0 - 15)
-            name  -- string to name interest area in EDF
-        '''
-            
+        """
+        Draws square interest area in EDF and a corresponding filled box on
+        eye-tracker display.
+
+        :param x: X coordinate in degrees visual angle for center of check area.
+        :type x: float or int
+        :param y: Y coordinate in degrees visual angle for center of check area.
+        :type y: float or int
+        :param size: length of one edge of square in degrees visual angle.
+        :type size: float or int
+        :param index: number to assign interest area in EDF
+        :type index: int
+        :param color: color of box drawn on eye-tracker display (0 - 15)
+        :type color: int
+        :param name: Name interest area in EDF
+        :type name: str
+        """
+
         # Convert units to eyelink space
         elx = deg2pix(x, self.win.monitor) + (self.sres[0] / 2.0)
         ely = -(deg2pix(y, self.win.monitor) - (self.sres[1] / 2.0))
@@ -157,69 +166,77 @@ class connect(object):
         self.tracker.sendCommand(bxmsg)
         
     def sendVar(self, name, value):
-        '''Sends trial variable to EDF file.
-        
-        Parameters
-            name  -- string for name of variable
-            value -- string or number for variable value
-        '''
-        
+        """
+        Sends a trial variable to the EDF file.
+
+        :param name: Name of variable.
+        :type name: str
+        :param value: Value of variable.
+        :type value: float, str, or int
+        """
+
         # Make string
         varmsg = '!V TRIAL_VAR {} {}'.format(name, value)
-    
+
         # Send message
         self.tracker.sendMessage(varmsg)
-        
-    def setTrialResult(self, rval = 0, scrcol = 0):
-        '''Sends trial result to indiciate trial end in EDF and clears    
-           screen on EyeLink Display.
-           
-        Parameters
-            rval   -- Value to set for TRIAL_RESULT. Defaults to 0
-            scrcol -- Color to clear screen to. Defaults to 0 (black)
-        '''
-        
+
+    def setTrialResult(self, rval=0, scrcol=0):
+        """
+        Sends trial result to indiciate trial end in EDF and clears screen on
+        EyeLink Display.
+
+        :param rval: Value to set for TRIAL_RESULT.
+        :type rval: float, str, or int
+        :param scrcol: Color to clear screen to. Defaults to black.
+        :type scrol: int
+        """
+
         trmsg = 'TRIAL_RESULT {}'.format(rval)
         cscmd = 'clear_screen {}'.format(scrcol)
-        
+
         self.tracker.sendMessage(trmsg)
         self.tracker.sendCommand(cscmd)
-        
+
     def endExperiment(self, spath):
-        '''Closes and transfers the EDF file.
-        
-        Parameters
-            spath -- File path of where to save EDF file. Include trailing 
-                     slash
-        '''
-        
+        """
+        Closes and transfers the EDF file.
+
+        :param spath: File path of where to save EDF file. Include trailing
+                      slash.
+        :type spath: str
+        """
+
         # File transfer and cleanup!
         self.tracker.setOfflineMode()
         time.sleep(.5)
-        
+
         # Generate file path
         fpath = spath + self.edfname
-        
-        #Close the file and transfer it to Display PC
+
+        # Close the file and transfer it to Display PC
         self.tracker.closeDataFile()
         time.sleep(1)
         self.tracker.receiveDataFile(self.edfname, fpath)
         self.tracker.close()
-        
+
     def fixCheck(self, size, ftime, button):
-        '''Checks that fixation is maintained for certain time.
-        
-        Parameters
-            size   -- length of one side of box in degrees visual angle
-            ftime  -- length of time to check for fixation in seconds
-            button -- key to press to recalibrate eye-tracker
-        '''
-        
+        """
+        Checks that fixation is maintained for certain time.
+
+        :param size: Length of one side of box in degrees visual angle.
+        :type size: float or int
+        :param ftime: Length of time to check for fixation in seconds.
+        :type ftime: int
+        :param button: Key to press to recalibrate eye-tracker.
+        :type button: char
+        """
+
         # Calculate Fix check borders
         cenX = self.sres[0] / 2.0
         cenY = self.sres[1] / 2.0
         size = deg2pix(size, self.win.monitor) / 2.0
-        
+
         xbdr = [cenX - size, cenX + size]
         ybdr = [cenY - size, cenY + size]
 
@@ -269,31 +286,35 @@ class connect(object):
                 fixtime = time.clock()
                 
     def sendMessage(self, txt):
-        '''Sends a message to the tracker that is recorded in the EDF
-        
-        Parameters
-            txt -- String that contains the message
-        '''
-        
+        """
+        Sends a message to the tracker that is recorded in the EDF.
+
+        :param txt: Message to send.
+        :type txt: str
+        """
+
         # Send message
         self.tracker.sendMessage(txt)
         
     def sendCommand(self, cmd):
-        '''Sends a command to EyeLink
-        
-        Parameters
-            cmd -- String that contains the command
-        '''
-        
+        """
+        Sends a command to the Eyelink.
+
+        :param cmd: Command to send.
+        :type cmd: str
+        """
+
         # Send Command
         self.tracker.sendCommand(cmd)
         
     def drawText(self, msg):
-        '''Draws text on eye-tracker screen
-        
-        Parameters
-            msg -- String that contains text.
-        '''
+        """
+        Draws text on eye-tracker screen.
+
+        :param msg: Text to draw.
+        :type msg: str
+        """
+
         # Figure out center
         x = self.sres[0] / 2
         
