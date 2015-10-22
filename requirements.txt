@@ -21,7 +21,6 @@ envoy==0.0.3
 funcsigs==0.4
 functools32==3.2.3-2
 gnureadline==6.3.3
-ioLabs==3.2
 ipython==4.0.0
 ipython-genutils==0.1.0
 jdcal==1.0
