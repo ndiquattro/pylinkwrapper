@@ -12,6 +12,7 @@ class Connect(object):
 
     :param window: Psychopy window object.
     :param edfname: Desired name of the EDF file.
+    :type edfname: str
     """
 
     def __init__(self, window, edfname):
@@ -67,7 +68,7 @@ class Connect(object):
                      9, 13.
         :type cnum: int
         :param paval: Pacing of calibration, i.e. how long you have to fixate
-                      each target.
+                      each target in milliseconds.
         :type paval: int
         """
 
@@ -148,7 +149,7 @@ class Connect(object):
         :type index: int
         :param color: color of box drawn on eye-tracker display (0 - 15)
         :type color: int
-        :param name: Name interest area in EDF
+        :param name: Name of interest area in EDF
         :type name: str
         """
 
@@ -212,7 +213,7 @@ class Connect(object):
         :type spath: str
         """
 
-        # File transfer and cleanup!
+        # Rest the eyetracker
         self.tracker.setOfflineMode()
         time.sleep(.5)
 
