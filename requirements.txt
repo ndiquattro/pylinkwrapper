@@ -38,7 +38,6 @@ pathtools==0.1.2
 pbr==1.7.0
 pexpect==3.3
 pickleshare==0.5
-pp==1.6.4
 py==1.4.30
 pycparser==2.14
 pyglet==1.2.4
