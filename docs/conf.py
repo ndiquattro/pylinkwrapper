@@ -13,6 +13,7 @@
 # serve to show the default.
 
 import sys
+from mock import Mock as MagicMock
 import os
 import shlex
 
@@ -22,7 +23,13 @@ import shlex
 sys.path.insert(0, os.path.abspath('../..'))
 
 # -- General configuration ------------------------------------------------
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+            return Mock()
 
+MOCK_MODULES = ['app', 'pylink']
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
 
