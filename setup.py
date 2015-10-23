@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='pylinkwrapper',
     version='1.0',
-    packages=[],
+    packages=['pylinkwrapper'],
     url='',
     license='MIT',
     author='Nick DiQuattro',
