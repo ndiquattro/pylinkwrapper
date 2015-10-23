@@ -21,7 +21,7 @@ import shlex
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('../../'))
+sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration ------------------------------------------------
 # class Mock(MagicMock):
@@ -37,7 +37,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 MOCK_MODULES = ['psychopy', 'pylink', 'psychopy.tools.monitorunittools',
                 'psychopy.core', 'psychopy.event', 'psychopy.sound',
-                'psychopy.visual', 'deg2pix', 'psychocal', 'pylinkwrapper']
+                'psychopy.visual', 'deg2pix', 'psychocal']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
 # If your documentation needs a minimal Sphinx version, state it here.
