@@ -317,6 +317,7 @@ class Connect(object):
     def get_gaze(self):
         """
         Gets current gaze position of eye. Assumes recording is on.
+
         :return: list of coordinates in the form of [x, y].
         """
 
