@@ -13,7 +13,8 @@
 # serve to show the default.
 
 import sys
-from mock import Mock as MagicMock
+import mock
+# from mock import Mock as MagicMock
 import os
 import shlex
 
@@ -23,16 +24,22 @@ import shlex
 sys.path.insert(0, os.path.abspath('../'))
 
 # -- General configuration ------------------------------------------------
-class Mock(MagicMock):
-    @classmethod
-    def __getattr__(cls, name):
-            return Mock()
+# class Mock(MagicMock):
+#     @classmethod
+#     def __getattr__(cls, name):
+#             return Mock()
+#
+# MOCK_MODULES = ['psychopy', 'pylink', 'scipy', 'numpy', 'tempfile',
+#                 'psychopy.tools.monitorunittools', 'core', 'event', 'sound',
+#                 'visual', 'deg2pix', 'psychocal']
+#
+# sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
-MOCK_MODULES = ['psychopy', 'pylink', 'scipy', 'numpy', 'tempfile',
-                'psychopy.tools.monitorunittools', 'core', 'event', 'sound',
-                'visual', 'deg2pix', 'psychocal']
-
-sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+MOCK_MODULES = ['psychopy', 'pylink', 'psychopy.tools.monitorunittools',
+                'psychopy.core', 'psychopy.event', 'psychopy.sound',
+                'psychopy.visual', 'deg2pix', 'psychocal']
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = mock.Mock()
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
 
