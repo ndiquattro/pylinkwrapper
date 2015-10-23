@@ -28,7 +28,7 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
             return Mock()
 
-MOCK_MODULES = ['psychopy', 'pylink', 'scipy', 'numpy', 'tempfile', 'psychopy.tools.monitorunittools']
+MOCK_MODULES = ['psychopy', 'pylink', 'scipy', 'numpy', 'tempfile', 'psychopy.tools.monitorunittools', 'core', 'event', 'sound', 'visual', 'deg2pix']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
