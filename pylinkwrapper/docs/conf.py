@@ -14,6 +14,7 @@
 
 import sys
 import os
+import mock
 import shlex
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -21,7 +22,7 @@ import shlex
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('../..'))
 
-MOCK_MODULES = ['psychopy', 'pylink', 'psychopy.tools.monitorunittools',
+MOCK_MODULES = ['psychopy', 'pylink', 'psychopy.tools.monitorunittools', 'psychopy.tools',
                 'psychopy.core', 'psychopy.event', 'psychopy.sound',
                 'psychopy.visual', 'deg2pix']
 for mod_name in MOCK_MODULES:
