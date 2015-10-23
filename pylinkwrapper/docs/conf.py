@@ -14,6 +14,7 @@
 
 import sys
 import os
+import mock
 import shlex
 
 # If extensions (or modules to document with autodoc) are in another directory,
