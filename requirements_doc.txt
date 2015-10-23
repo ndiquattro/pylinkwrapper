@@ -1,0 +1,2 @@
+PsychoPy==1.82.01
+pylink==0.3.2
