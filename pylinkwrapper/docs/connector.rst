@@ -3,5 +3,5 @@ Connector Class
 This class provides methods for interacting with the Eyelink from psychopy.
 
 .. automodule:: pylinkwrapper
-.. autoclass:: connect
+.. autoclass:: Connect
     :members:
