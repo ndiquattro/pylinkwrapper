@@ -2,6 +2,7 @@ Installation
 =========================================
 1. `Download <https://github.com/ndiquattro/pylinkwrapper/releases>`_ and place the pylinkwrapper folder somewhere you can easily reach in the file system.
 2. Add the folder to Psychopy's python path as detailed here: http://www.psychopy.org/recipes/addCustomModules.html
+3. Update pylink to the latest version provided by the SR Research development kit. It should be installed on the display computer.
 
 That's it! Here's a quick demo of getting connected to the Eyelink::
 
