@@ -2,7 +2,7 @@
 import pylink
 import psychocal
 import time
-from psychopy.tools.monitorunittools import deg2pix
+from psychopy.tools.monitorunittools import deg2pix, pix2deg
 from psychopy import event
 
 
@@ -154,8 +154,7 @@ class Connect(object):
         """
 
         # Convert units to eyelink space
-        elx = deg2pix(x, self.win.monitor) + self.scenter[0]
-        ely = -(deg2pix(y, self.win.monitor) - self.scenter[1])
+        elx, ely = self.convert_coords(x, y)
         elsz = deg2pix(size, self.win.monitor) / 2.0
 
         # Make top left / bottom right coordinates for square
@@ -254,7 +253,6 @@ class Connect(object):
         self.tracker.startRecording(0, 0, 1, 1)
 
         # Begin polling
-        keys = []
         fixtime = time.clock()
         while self.realconnect:  # only start check loop if real connection
 
@@ -333,6 +331,27 @@ class Connect(object):
 
             return gaze
 
+    def convert_coords(self, x, y, to='eyelink'):
+        """
+        Converts from degrees visual angle units to EyeLink Pixel units.
+        :param x: X coordinate in visual angle.
+        :type x: float or int
+        :param y: Y coordinate in viusal angle.
+        :type y: float or int
+        :param to: Direction of conversion. Options: 'eyelink' or 'psychopy'.
+        :return: Two values in order x, y
+        """
+        if to == 'eyelink':
+            # Convert coordinates to Eyelink space
+            elx = deg2pix(x, self.win.monitor) + self.scenter[0]
+            ely = -(deg2pix(y, self.win.monitor) - self.scenter[1])
+
+        elif to == 'psychopy':
+            elx = pix2deg(x - self.scenter[0], self.win.monitor)
+            ely = pix2deg(-(y - self.scenter[1]), self.win.monitor)
+
+        return [elx, ely]
+
     def sacdetect(self, x, y, radius):
         """
         Checks if current gaze position is outside a circular interest area.
@@ -343,13 +362,12 @@ class Connect(object):
         :type y: float or int
         :param radius: Radius of detection circle in degrees visual angle.
         :type radius: float or int
-        :return: True or False
-        :rtype: bool
+        :return: True or False, gaze coordinates
+        :rtype: bool, list
         """
 
         # Convert coordinates to Eyelink space
-        elx = deg2pix(x, self.win.monitor) + self.scenter[0]
-        ely = -(deg2pix(y, self.win.monitor) - self.scenter[1])
+        elx, ely = self.convert_coords(x, y)
         elsr = deg2pix(radius, self.win.monitor)
 
         if self.realconnect:
@@ -362,4 +380,7 @@ class Connect(object):
             # Compare to radius
             outcirc = gdist > (elsr ** 2)
 
-            return outcirc
+            # Convert gaze to psychopy units
+            gaze = self.convert_coords(gaze[0], gaze[1], to='psychopy')
+
+            return outcirc, gaze
