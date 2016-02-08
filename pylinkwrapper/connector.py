@@ -1,7 +1,9 @@
 # Pylink wrapper for Psychopy
+import os
 import pylink
 import psychocal
 import time
+import re
 from psychopy.tools.monitorunittools import deg2pix, pix2deg
 from psychopy import event
 
@@ -22,7 +24,11 @@ class Connect(object):
         self.win = window
 
         # Make filename
-        self.edfname = edfname + '.edf'
+        fname = os.path.splitext(edfname)[0]  # strip away extension if present
+        assert re.match(r'\w+$', fname), 'Name must only include A-Z, 0-9, or _'
+        assert len(fname) <= 8, 'Name must be <= 8 characters.'
+
+        self.edfname = fname + '.edf'
 
         # Initialize connection with eye-tracker
         try:
@@ -85,6 +91,9 @@ class Connect(object):
             self.tracker.setAutoCalibrationPacing(paval)
 
             # Execute custom calibration display
+            print '*' * 150
+            print 'Calibration Mode'
+            print '*' * 150
             pylink.openGraphicsEx(genv)
 
             # Calibrate
@@ -207,8 +216,7 @@ class Connect(object):
         """
         Closes and transfers the EDF file.
 
-        :param spath: File path of where to save EDF file. Include trailing
-                      slash.
+        :param spath: Absolute file path of where to save the EDF file.
         :type spath: str
         """
 
@@ -217,15 +225,16 @@ class Connect(object):
         time.sleep(.5)
 
         # Generate file path
-        fpath = spath + self.edfname
+        fpath = os.path.join(spath, self.edfname)
 
         # Close the file and transfer it to Display PC
         self.tracker.closeDataFile()
         time.sleep(1)
+        assert os.path.isdir(spath), 'EDF destination directory does not exist.'
         self.tracker.receiveDataFile(self.edfname, fpath)
         self.tracker.close()
 
-    def fixcheck(self, size, ftime, button):
+    def fix_check(self, size, ftime, button):
         """
         Checks that fixation is maintained for certain time.
 
@@ -352,7 +361,7 @@ class Connect(object):
 
         return [elx, ely]
 
-    def sacdetect(self, x, y, radius):
+    def sac_detect(self, x, y, radius):
         """
         Checks if current gaze position is outside a circular interest area.
 
