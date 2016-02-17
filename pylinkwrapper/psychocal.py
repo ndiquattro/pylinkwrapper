@@ -235,38 +235,27 @@ class psychocal(pylink.EyeLinkCustomDisplay):
         v = event.getKeys()
 
         for key in v:
-            char = key
             pylink_key = None
-            if char == "escape":
+            if len(key) == 1:
+                pylink_key = ord(key)
+            elif key == "escape":
                 pylink_key = pylink.ESC_KEY
-            elif char == "return":
+            elif key == "return":
                 pylink_key = pylink.ENTER_KEY
-            elif char == " ":
-                pylink_key = ord(char)
-            elif char == "c":
-                pylink_key = ord(char)
-            elif char == "v":
-                pylink_key = ord(char)
-            elif char == "a":
-                pylink_key = ord(char)
-            elif char == "pageup":
+            elif key == "pageup":
                 pylink_key = pylink.PAGE_UP
-            elif char == "pagedown":
+            elif key == "pagedown":
                 pylink_key = pylink.PAGE_DOWN
-            elif char == "-":
-                pylink_key = ord(char)
-            elif char == "=":
-                pylink_key = ord(char)
-            elif char == "up":
+            elif key == "up":
                 pylink_key = pylink.CURS_UP
-            elif char == "down":
+            elif key == "down":
                 pylink_key = pylink.CURS_DOWN
-            elif char == "left":
+            elif key == "left":
                 pylink_key = pylink.CURS_LEFT
-            elif char == "right":
+            elif key == "right":
                 pylink_key = pylink.CURS_RIGHT
             else:
-                print('Error! :{} is not a used key.'.format(char))
+                print('Error! :{} is not a used key.'.format(key))
                 return
 
             ky.append(pylink.KeyInput(pylink_key, 0))

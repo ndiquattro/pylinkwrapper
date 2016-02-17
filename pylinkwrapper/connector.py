@@ -333,7 +333,7 @@ class Connect(object):
             sample = self.tracker.getNewestSample()
 
             # Extract gaze coordinates
-            if self.eye_used == 1:
+            if self.eye_used == 65535:
                 gaze = sample.getRightEye().getGaze()
             else:
                 gaze = sample.getLeftEye().getGaze()
@@ -343,6 +343,7 @@ class Connect(object):
     def convert_coords(self, x, y, to='eyelink'):
         """
         Converts from degrees visual angle units to EyeLink Pixel units.
+
         :param x: X coordinate in visual angle.
         :type x: float or int
         :param y: Y coordinate in viusal angle.
