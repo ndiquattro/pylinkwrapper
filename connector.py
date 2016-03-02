@@ -146,7 +146,8 @@ class Connect(object):
     def draw_ia(self, x, y, size, index, color, name):
         """
         Draws square interest area in EDF and a corresponding filled box on
-        eye-tracker display.
+        eye-tracker display. Must be called after :py:func:`set_trialid` for
+        interest ares to appear in the EDF.
 
         :param x: X coordinate in degrees visual angle for center of check area.
         :type x: float or int
