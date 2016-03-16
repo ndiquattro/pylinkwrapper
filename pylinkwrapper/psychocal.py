@@ -1,5 +1,6 @@
 # Define custom calibration display using Psychopy
-from psychopy import event, sound, visual
+from psychopy import core, event, sound, visual
+from psychopy.tools.monitorunittools import deg2pix
 import pylink
 import scipy
 import numpy as np
@@ -235,27 +236,38 @@ class psychocal(pylink.EyeLinkCustomDisplay):
         v = event.getKeys()
 
         for key in v:
+            char = key
             pylink_key = None
-            if len(key) == 1:
-                pylink_key = ord(key)
-            elif key == "escape":
+            if char == "escape":
                 pylink_key = pylink.ESC_KEY
-            elif key == "return":
+            elif char == "return":
                 pylink_key = pylink.ENTER_KEY
-            elif key == "pageup":
+            elif char == " ":
+                pylink_key = ord(char)
+            elif char == "c":
+                pylink_key = ord(char)
+            elif char == "v":
+                pylink_key = ord(char)
+            elif char == "a":
+                pylink_key = ord(char)
+            elif char == "pageup":
                 pylink_key = pylink.PAGE_UP
-            elif key == "pagedown":
+            elif char == "pagedown":
                 pylink_key = pylink.PAGE_DOWN
-            elif key == "up":
+            elif char == "-":
+                pylink_key = ord(char)
+            elif char == "=":
+                pylink_key = ord(char)
+            elif char == "up":
                 pylink_key = pylink.CURS_UP
-            elif key == "down":
+            elif char == "down":
                 pylink_key = pylink.CURS_DOWN
-            elif key == "left":
+            elif char == "left":
                 pylink_key = pylink.CURS_LEFT
-            elif key == "right":
+            elif char == "right":
                 pylink_key = pylink.CURS_RIGHT
             else:
-                print('Error! :{} is not a used key.'.format(key))
+                print('Error! :{} is not a used key.'.format(char))
                 return
 
             ky.append(pylink.KeyInput(pylink_key, 0))
