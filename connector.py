@@ -242,7 +242,7 @@ class Connect(object):
         :param size: Length of one side of box in degrees visual angle.
         :type size: float or int
         :param ftime: Length of time to check for fixation in seconds.
-        :type ftime: int
+        :type ftime: float
         :param button: Key to press to recalibrate eye-tracker.
         :type button: char
         """
@@ -324,7 +324,9 @@ class Connect(object):
 
     def get_gaze(self):
         """
-        Gets current gaze position of eye. Assumes recording is on.
+        Gets current gaze position of eye. Must be called between
+        :py:func:`record_on` and :py:func:`record_off`. Sendlink must be set to
+        True as well.
 
         :return: list of coordinates in the form of [x, y].
         """
@@ -373,7 +375,8 @@ class Connect(object):
         :type y: float or int
         :param radius: Radius of detection circle in degrees visual angle.
         :type radius: float or int
-        :return: True or False, gaze coordinates
+        :return: List of whether saccade was detected and the gaze coordinates
+        at time of detection. In the form of [bool, [x, y]].
         :rtype: bool, list
         """
 
