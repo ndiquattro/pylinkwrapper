@@ -266,7 +266,7 @@ class psychocal(pylink.EyeLinkCustomDisplay):
         self.clear_cal_display()
 
     def alert_printf(self, msg):
-        print "alert_printf %s" % msg
+        print("alert_printf %s" % msg)
 
     def setup_image_display(self, width, height):
 
