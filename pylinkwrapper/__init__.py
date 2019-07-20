@@ -1,1 +1,1 @@
-from connector import Connect
+from .connector import Connect
