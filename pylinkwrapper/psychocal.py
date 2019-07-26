@@ -26,14 +26,15 @@ class psychocal(pylink.EyeLinkCustomDisplay):
         else:
             tcolout = -1
         self.txtcol = tcolout
-
+        print("tcolout: {}", tcolout)
+        convert_color = lambda c: tuple(c) if isinstance(c, np.ndarray) else c
         self.targetout = visual.Circle(self.window, pos=(0, 0), radius=10,
-                                       fillColor=tcolout,
-                                       lineColor=tcolout, units='pix')
+                                       fillColor=convert_color(tcolout),
+                                       lineColor=convert_color(tcolout), units='pix')
 
         self.targetin = visual.Circle(self.window, pos=(0, 0), radius=3,
-                                      fillColor=window.color,
-                                      lineColor=window.color,
+                                      fillColor=convert_color(window.color),
+                                      lineColor=convert_color(window.color),
                                       units='pix')
 
         # Set up sounds
