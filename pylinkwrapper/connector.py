@@ -46,7 +46,7 @@ class Connect(object):
 
         # Open EDF
         #Close any open file first
-        if self.tracker.getTrackerMode() == pylink.EL_RECOD_MODE:
+        if self.tracker.getTrackerMode() == pylink.EL_RECORD_MODE:
             self.tracker.closeDataFile()
         self.tracker.openDataFile(self.edfname)
         pylink.flushGetkeyQueue()
