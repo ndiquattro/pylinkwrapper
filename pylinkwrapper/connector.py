@@ -38,9 +38,6 @@ class Connect(object):
             self.tracker = pylink.EyeLink(None)
             self.realconnect = False
 
-        # Check which eye is being recorded
-        self.eye_used = self.tracker.eyeAvailable()
-
         # Make pylink accessible
         self.pylink = pylink
 
@@ -68,6 +65,9 @@ class Connect(object):
         # Set display coords for dataviewer
         disptxt = 'DISPLAY_COORDS 0 0 {} {}'.format(*self.sres)
         self.tracker.sendMessage(disptxt)
+
+        # Check which eye is being recorded
+        self.eye_used = self.tracker.eyeAvailable()
 
     def calibrate(self, cnum=13, paval=1000):
         """
