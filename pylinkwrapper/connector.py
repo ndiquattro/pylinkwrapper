@@ -17,7 +17,7 @@ class Connect(object):
     :type edfname: str
     """
 
-    def __init__(self, window, edfname):
+    def __init__(self, window, edfname, address="100.1.1.1"):
         # Pull out monitor info
         self.sres = window.size
         self.scenter = [self.sres[0] / 2.0, self.sres[1] / 2.0]
@@ -32,14 +32,11 @@ class Connect(object):
 
         # Initialize connection with eye-tracker
         try:
-            self.tracker = pylink.EyeLink()
+            self.tracker = pylink.EyeLink(address)
             self.realconnect = True
         except RuntimeError:
             self.tracker = pylink.EyeLink(None)
             self.realconnect = False
-
-        # Check which eye is being recorded
-        self.eye_used = self.tracker.eyeAvailable()
 
         # Make pylink accessible
         self.pylink = pylink
@@ -68,6 +65,9 @@ class Connect(object):
         # Set display coords for dataviewer
         disptxt = 'DISPLAY_COORDS 0 0 {} {}'.format(*self.sres)
         self.tracker.sendMessage(disptxt)
+
+        # Check which eye is being recorded
+        self.eye_used = self.tracker.eyeAvailable()
 
     def calibrate(self, cnum=13, paval=1000):
         """
