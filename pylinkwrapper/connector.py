@@ -1,7 +1,7 @@
 # Pylink wrapper for Psychopy
 import os
 import pylink
-import psychocal
+from . import psychocal
 import time
 import re
 from psychopy.tools.monitorunittools import deg2pix, pix2deg
@@ -17,7 +17,7 @@ class Connect(object):
     :type edfname: str
     """
 
-    def __init__(self, window, edfname):
+    def __init__(self, window, edfname, address="100.1.1.1"):
         # Pull out monitor info
         self.sres = window.size
         self.scenter = [self.sres[0] / 2.0, self.sres[1] / 2.0]
@@ -32,19 +32,19 @@ class Connect(object):
 
         # Initialize connection with eye-tracker
         try:
-            self.tracker = pylink.EyeLink()
+            self.tracker = pylink.EyeLink(address)
             self.realconnect = True
         except RuntimeError:
             self.tracker = pylink.EyeLink(None)
             self.realconnect = False
 
-        # Check which eye is being recorded
-        self.eye_used = self.tracker.eyeAvailable()
-
         # Make pylink accessible
         self.pylink = pylink
 
         # Open EDF
+        #Close any open file first
+        if self.tracker.getTrackerMode() == pylink.EL_RECORD_MODE:
+            self.tracker.closeDataFile()
         self.tracker.openDataFile(self.edfname)
         pylink.flushGetkeyQueue()
         self.tracker.setOfflineMode()
@@ -65,6 +65,9 @@ class Connect(object):
         # Set display coords for dataviewer
         disptxt = 'DISPLAY_COORDS 0 0 {} {}'.format(*self.sres)
         self.tracker.sendMessage(disptxt)
+
+        # Check which eye is being recorded
+        self.eye_used = self.tracker.eyeAvailable()
 
     def calibrate(self, cnum=13, paval=1000):
         """
@@ -91,9 +94,9 @@ class Connect(object):
             self.tracker.setAutoCalibrationPacing(paval)
 
             # Execute custom calibration display
-            print '*' * 150
-            print 'Calibration Mode'
-            print '*' * 150
+            print('*' * 150)
+            print('Calibration Mode')
+            print('*' * 150)
             pylink.openGraphicsEx(genv)
 
             # Calibrate
